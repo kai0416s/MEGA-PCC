@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8"> <meta name="description" content="MEGA-PCC"> 
+	<meta name="keywords" content="MEGA-PCC"> <meta name="viewport" content="width=device-width, initial-scale=1"> 
+	<title>MEGA-PCC: A Mamba-based Efficient Approach for Joint Geometry and Attribute Point Cloud Compression</title>
+	
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/MEGA_icon.png">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="https://keunhong.com">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+      </a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More Research
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://applied-computing-and-multimedia-lab.github.io/SEDD-PCC/">
+            SEDD-PCC
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">
+
+  <!-- 第一行：Logo + 標題 -->
+  <div style="display:flex; align-items:center; justify-content:center; gap:12px;">
+    <img src="./static/images/MEGA_icon.png"
+         alt="MEGA Logo"
+         style="height:64px;">
+    <span>MEGA-PCC</span>
+  </div>
+
+  <!-- 第二行：副標題 -->
+  <div style="margin-top:0.4em; font-size:0.6em; font-weight:400;">
+    A Mamba-based Efficient Approach for Joint Geometry and Attribute Point Cloud Compression
+  </div>
+
+</h1>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://www.linkedin.com/in/kai-hsiang-hsieh/">Kai-Hsiang Hsieh</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="mailto:yimmonyneath@gmail.com">Monyneath Yim</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="https://sites.google.com/g2.nctu.edu.tw/wpeng">Wen-Hsiao Peng</a><sup>2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://chiang.ccu.edu.tw/index.php">Jui-Chiu Chiang</a><sup>1</sup>,
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>National Chung Cheng University, Taiwan</span><br>
+			<span class="author-block"><sup>2</sup>National Yang Ming Chiao Tung University, Taiwan</span>
+
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href=""
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://arxiv.org/pdf/2512.22463"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/kai0416s/MEGA-PCC"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<style>
+  /* 點擊放大 cursor */
+  .click-zoom {
+    cursor: zoom-in;
+  }
+
+  /* Modal 全屏白色背景 */
+  #modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: #ffffff;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #modal img {
+    max-width: 90%;
+    max-height: 90vh;
+  }
+</style>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- 左右排列 -->
+    <div class="columns is-vcentered">
+      <!-- 左邊圖片 -->
+      <div class="column is-half">
+        <figure>
+          <img src="./static/images/teaser.svg" alt="Teaser" class="click-zoom" style="width:auto; height:auto;" onclick="openModal(this)">
+        </figure>
+      </div>
+
+      <!-- 右邊文字 -->
+      <div class="column is-half">
+        <div class="content has-text-justified is-size-6">
+          <p>
+            Figure 1: (a) Existing point cloud joint compression methods rely on recoloring to align geometry and attributes. However, manual bit allocation leads to suboptimal reconstruction. (b) The proposed
+            MEGA-PCC uses a shared latent space and loss-based bit allocation, enabling end-to-end compression without recoloring or posthoc model matching. (c) Traditional model matching involves an
+            exhaustive search of the optimal pairing (e.g., pairing 5 rate points from PCGCv2 with ANF-PCAC) and selects top results based on PCQM scores, incurring high computational cost.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Modal -->
+<div id="modal" onclick="closeModal()">
+  <img id="modal-img" src="">
+</div>
+
+<script>
+  function openModal(img) {
+    const modal = document.getElementById('modal');
+    const modalImg = document.getElementById('modal-img');
+    modal.style.display = 'flex';
+    modalImg.src = img.src;
+  }
+
+  function closeModal() {
+    const modal = document.getElementById('modal');
+    modal.style.display = 'none';
+  }
+</script>
+
+	<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <!-- 在 Abstract 前增加段落間距 -->
+        <div class="mt-1"></div>  <!-- Bulma 的 margin-top class -->
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Joint compression of point cloud geometry and attributes is essential for efficient 3D data representation. Existing methods often rely on post-hoc recoloring procedures and manually tuned bitrate allocation between geometry and attribute bitstreams in inference, which hinders end-to-end
+optimization and increases system complexity. 
+          </p>
+           <p>
+            To overcome these limitations, we propose MEGA-PCC, a fully end-to-end, learning-based framework featuring two specialized models for joint compression. The main compression model employs a shared encoder that encodes both geometry and attribute information into a unified latent representation, followed by dual decoders that sequentially reconstruct geometry and then attributes. Complementing
+this, the Mamba-based Entropy Model (MEM) enhances entropy coding by capturing spatial and channel-wise correlations to improve probability estimation. Both models
+are built on the Mamba architecture to effectively model
+long-range dependencies and rich contextual features. 
+          </p>
+          <p>
+            By eliminating the need for recoloring and heuristic bitrate tuning, MEGA-PCC enables data-driven bitrate allocation during training and simplifies the overall pipeline. Extensive experiments demonstrate that MEGA-PCC achieves superior rate-distortion performance and runtime efficiency
+compared to both traditional and learning-based baselines, offering a powerful solution for AI-driven point cloud compression.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+    
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">MEGA-PCC Architecture</h2>
+
+        <!-- 圖片 -->
+        <figure>
+          <img src="./static/images/MEGA_Architecture.svg" 
+               alt="MEGA Architecture" 
+               class="click-zoom" 
+               onclick="openModal(this)">
+          <figcaption class="content has-text-justified is-size-6">
+            Figure 2: The unified encoder jointly processes geometry and attributes using multi-layer sparse convolutions and Mamba blocks to capture
+            both local and global dependencies, producing a shared latent representation. During decoding, geometry is reconstructed first, and the
+            decoded coordinates guide the attribute decoder, enabling efficient joint compression.
+          </figcaption>
+        </figure>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Modal -->
+<div id="modal" onclick="closeModal()">
+  <img id="modal-img" src="">
+</div>
+
+ <!-- 引入 basicLightbox -->
+<link rel="stylesheet" href="https://unpkg.com/basiclightbox/dist/basicLightbox.min.css">
+<script src="https://unpkg.com/basiclightbox/dist/basicLightbox.min.js"></script>
+
+<section class="section">
+  <div class="container is-max-desktop">
+	<h2 class="title is-3 has-text-centered">Mamba Block in Encoder and Decoder</h2>
+    <div class="columns is-vcentered">
+      <!-- 左邊圖片 -->
+      <div class="column is-half">
+        <figure>
+          <img src="./static/images/mambascan.png" alt="Mamba Scan" class="click-zoom" height="60%" style="cursor: zoom-in;">
+        </figure>
+      </div>
+
+      <!-- 右邊文字 -->
+      <div class="column is-half">
+        <div class="content has-text-justified is-size-6">
+          <p>
+            Figure 3: (a) Serialize point clouds into a sequence while preserving spatial proximity relationships between consecutive elements in the sequence. 
+            (b) Tri-Mamba, which is used in both encoder and decoder for feature extraction, combines forward, backward, and feature channel scanning to comprehensively understand spatial information and leverage channel-wise information to enrich feature representation.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // 點擊圖片觸發全屏放大
+  document.querySelectorAll('.click-zoom').forEach(img => {
+    img.addEventListener('click', () => {
+      const instance = basicLightbox.create(`
+        <div style="background: #ffffff; display:flex; align-items:center; justify-content:center; height:100vh;">
+          <img src="${img.src}" style="max-width:90%; max-height:90vh; display:block; margin:auto;">
+        </div>
+      `);
+      instance.show();
+    });
+  });
+</script>
+
+
+<style>
+  /* 點擊放大 cursor */
+  .click-zoom {
+    cursor: zoom-in;
+  }
+
+  /* Modal 全屏白色背景 */
+  #modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: #ffffff;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #modal img {
+    max-width: 90%;
+    max-height: 90vh;
+  }
+</style>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Mamba-based Entropy Model (MEM)</h2>
+
+    <div class="columns is-vcentered">
+      <!-- 左邊圖片 -->
+      <div class="column is-half">
+        <figure>
+          <img src="./static/images/MEM.png" alt="MEM" class="click-zoom" height="75%" onclick="openModal(this)">
+        </figure>
+      </div>
+
+      <!-- 右邊文字 -->
+      <div class="column is-half">
+        <div class="content has-text-justified is-size-6">
+          <p>
+            Figure 4: The core component of MEM is the Bi-Mamba module, which performs two causal scans. Forward SSM processes the token sequence in a forward direction to model long-range spatial
+            relationships, while Channel Flip SSM scans across feature channels to capture inter-channel correlations for each token. Both scanning operations are causal, ensuring that only
+            past information is used when predicting the current token’s distribution.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Modal -->
+<div id="modal" onclick="closeModal()">
+  <img id="modal-img" src="">
+</div>
+
+<script>
+  function openModal(img) {
+    const modal = document.getElementById('modal');
+    const modalImg = document.getElementById('modal-img');
+    modal.style.display = 'flex';
+    modalImg.src = img.src;
+  }
+
+  function closeModal() {
+    const modal = document.getElementById('modal');
+    modal.style.display = 'none';
+  }
+</script>
+
+ <style>
+  /* 圖片網格 */
+  .image-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 列 */
+    gap: 10px;
+  }
+
+  .image-grid img {
+    width: 100%;
+    cursor: zoom-in;
+    transition: transform 0.3s ease;
+  }
+
+  .image-grid img:hover {
+    transform: scale(1.05);
+  }
+
+  /* 放大視窗 */
+  #modal {
+    display: none; 
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: white; /* 背景白色 */
+    align-items: center;
+    justify-content: center;
+  }
+
+  #modal img {
+    max-width: 90%;
+    max-height: 90vh;
+  }
+</style>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Experiment results</h2>
+
+    <div class="image-grid">
+      <img src="./static/images/longdress_vox10_1300.png" alt="Fig 1" onclick="openModal(this)">
+      <img src="./static/images/loot_vox10_1200.png" alt="Fig 2" onclick="openModal(this)">
+      <img src="./static/images/redandblack_vox10_1550.png" alt="Fig 3" onclick="openModal(this)">
+      <img src="./static/images/soldier_vox10_0690.png" alt="Fig 4" onclick="openModal(this)">
+      <img src="./static/images/basketball_player_vox11_00000200.png" alt="Fig 5" onclick="openModal(this)">
+      <img src="./static/images/dancer_vox11_00000001.png" alt="Fig 6" onclick="openModal(this)">
+    </div>
+
+    <p class="caption en has-text-centered" style="margin-top: 10px; font-size: 18px;">
+  Fig. 5 R-D performance of the proposed scheme in terms of 1-PCQM.
+</p>
+
+  </div>
+</section>
+
+<!-- Modal -->
+<div id="modal" onclick="closeModal()">
+  <img id="modal-img" src="">
+</div>
+
+<script>
+  function openModal(img) {
+    const modal = document.getElementById('modal');
+    const modalImg = document.getElementById('modal-img');
+    modal.style.display = 'flex';
+    modalImg.src = img.src;
+  }
+
+  function closeModal() {
+    const modal = document.getElementById('modal');
+    modal.style.display = 'none';
+  }
+</script>
+
+<div class="toggle-section"> 
+	<div style="text-align: justify;"> 
+	<div class="image-box"> 
+	<p class="caption en has-text-centered" style="margin-top: 10px; font-size: 18px;"> 
+		Table 1. BD-Rate (%) comparison for geometry and attribute distortion relative to G-PCCv23 </p> 
+		<img src="./static/images/MEGA_BDBR.svg" alt="BD-rate comparison" /> 
+	</div> 
+	</div> 
+</div> 
+</div>
+
+	  
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@article{hsieh2025MEGAPCC,
+  title     = {MEGA-PCC: A Mamba-based Efficient Approach for Joint Geometry andAttribute Point Cloud Compression},
+  author    = {Kai-Hsiang Hsieh and Monyneath Yim and Wen-Hsiao Peng and Jui-Chiu Chiang},
+  year      = {2025},
+  eprint={2512.22463},
+  archivePrefix={arXiv},
+  primaryClass={cs.CV},
+  url={https://arxiv.org/pdf/2512.22463}
+}</code></pre>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      Website built upon <a href="https://github.com/nerfies/nerfies.github.io">&nbsp;Nerfies</a>.
+      Licensed under <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">&nbsp;CC BY-SA 4.0
+        License</a>.
+    </div>
+  </div>
+</footer>
+</body>
+</html>
